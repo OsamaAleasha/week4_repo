@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>To-Do List</h1>
+
+    <form action="/add" method="post">
+        <input type="text" name="task" placeholder="New task">
+        <button type="submit">Add</button>
+    </form>
+
+    <ol>
+    {% for task in tasks %}
+        <li>
+            {{ task.name }}
+            <div class="buttons">
+                <button class="edit" onclick="window.location.href='/tasks/{{ task.id }}/edit'">Edit</button>
+                <button onclick="deleteTask({{ task.id }})">Delete</button>
+            </div>
+        </li>
+    {% endfor %}
+    </ol>
+
+    <script>
+    function deleteTask(id) {
+        fetch("/tasks/" + id, { method: "DELETE" })
+            .then(() => location.reload());
+    }
+    </script>
+</body>
+</html>
